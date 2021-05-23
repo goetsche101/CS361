@@ -1,0 +1,36 @@
+<h1>Hello {{name}} Here is your To Do List! </h1>
+<h2>You have {{toDoCount}} items on your to do list.</h2>
+<div>{{owm}}</div>
+<form method="post">
+  <input type="text" name="name" id="toDoName">
+  <input type="submit" name="Add Item" value="Add Item">
+</form>
+{{#if toDo}}
+<ul>
+  {{#each toDo}}
+  <li>
+    <form method = "post">
+    <fieldset>
+      <div>TODO ID # {{this.id}} </div>
+      <label> Due Date:</label>
+        <input type = "text" name ='dueDate' value={{this.dueDate}}>
+      <label> Priority : </label>
+       <select name='priority'>
+         <option value = "High" name="pHigh" {{this.high}}> High </option>
+         <option value = "Low" name = "pLow" {{this.low}}> Low </option>
+       </select>
+      <p id="pbox">
+        <label> Description </label>
+        <textarea type='text' name='description' id='description' rows = '4'>
+          {{this.description}}
+        </textarea>
+      </p>
+      <input type = 'submit' name = 'Save' value='Save'>
+      <input type="hidden" name="id" value="{{this.id}}">
+      <input type="submit" name="Done" value="Mark as Done">
+    </form>
+  </fieldset>
+  </li>
+  {{/each}}
+</ul>
+{{/if}}

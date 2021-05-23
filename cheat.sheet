@@ -7,3 +7,6 @@ http://web.engr.oregonstate.edu/~goetsche/CS361-ENGHOST/index.html
 ssh goetsche@flip1.engr.oregonstate.edu
 
 https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=goetsch&format=json
+
+
+http://web.engr.oregonstate.edu/~goetsche/CS361-ENGHOST/index.html?search=goetsch
