@@ -1,16 +1,87 @@
 <h1>Hello {{name}} Here is your To Do List! </h1>
 <h2>You have {{toDoCount}} items on your to do list.</h2>
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+    console.log('DOM fully loaded and parsed');
+    var dragged;
+      /* events fired on the draggable target */
+      document.addEventListener("drag", function( event ) {}, false);
+
+      document.addEventListener("dragstart", function( event ) {
+        console.log("dragstart")
+          // store a ref. on the dragged elem
+          dragged = event.target;
+          console.log(dragged)
+          // make it half transparent
+          event.target.style.opacity = .5;
+      }, false);
+
+      document.addEventListener("dragend", function( event ) {
+        console.log("Dend")
+          // reset the transparency
+          event.target.style.opacity = "";
+      }, false);
+
+      /* events fired on the drop targets */
+      document.addEventListener("dragover", function( event ) {
+        console.log("dover")
+          // prevent default to allow drop
+          event.preventDefault();
+      }, false);
+
+      document.addEventListener("dragenter", function( event ) {
+        console.log("denter")
+          // highlight potential drop target when the draggable element enters it
+          if ( event.target.className == "dropzone" ) {
+              event.target.style.background = "purple";
+          }
+
+      }, false);
+
+      document.addEventListener("dragleave", function( event ) {
+        console.log("dleave")
+          // reset background of potential drop target when the draggable element leaves it
+          if ( event.target.className == "dropzone" ) {
+              event.target.style.background = "";
+          }
+      }, false);
+
+      document.addEventListener("drop", function( event ) {
+        console.log("drop")
+          // prevent default action (open as link for some elements)
+          event.preventDefault();
+          // move dragged elem to the selected drop target
+          if ( event.target.className == "dropzone" ) {
+            console.log("pnode", dragged.parentNode, event.target)
+              let tmp = document.createElement('span')
+              tmp.className = 'hide'
+              let drop_target = event.target
+              /*drop_target.before(tmp)*/
+              drop_target.appendChild(tmp)
+              /*dragged.before(drop_target)*/
+              dragged.before(event.target.querySelector('div'))
+              tmp.replaceWith(dragged)
+
+              event.target.style.background = "";
+
+          }
+
+      }, false);
+});
+</script>
+
 <div>{{owm}}</div>
 <form method="post">
   <input type="text" name="name" id="toDoName">
   <input type="submit" name="Add Item" value="Add Item">
 </form>
 {{#if toDo}}
+<div class='container'>
 <ul>
   {{#each toDo}}
-  <li>
+  <li id="draggable" draggable="true" ondragstart="event.dataTransfer.setData('text/plain',null)" class="dropzone">
     <form method = "post">
-    <fieldset>
+    <div draggable='true' class='box'>
       <div>TODO ID # {{this.id}} </div>
       <label> Due Date:</label>
         <input type = "text" name ='dueDate' value={{this.dueDate}}>
@@ -29,8 +100,9 @@
       <input type="hidden" name="id" value="{{this.id}}">
       <input type="submit" name="Done" value="Mark as Done">
     </form>
-  </fieldset>
+  </div>
   </li>
   {{/each}}
 </ul>
+</div>
 {{/if}}
